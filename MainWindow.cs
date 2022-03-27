@@ -28,10 +28,12 @@ namespace GHLtarUtility
         {
             InitializeComponent();
             this.FormClosing += this_FormClosing;
+
             try
             {
                 client = new ViGEmClient();
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 MessageBox.Show("You need to install the ViGEm Bus Driver to use this application.", "GHLtar Utility", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
@@ -63,11 +65,13 @@ namespace GHLtarUtility
                         case 3: ps3P1Indicator.Image = Properties.Resources.player4; break;
                         default: ps3P1Indicator.Image = Properties.Resources.player0; break;
                     }
-                } catch (Exception)
+                }
+                catch (Exception)
                 {
                     ps3P1Indicator.Image = Properties.Resources.player0;
                 }
-            } else
+            }
+            else
             {
                 ps3P1Panel.BackColor = Color.LightGray;
                 ps3P1Label.Text = "Not Connected";
@@ -294,7 +298,7 @@ namespace GHLtarUtility
             watcher.ScanningMode = BluetoothLEScanningMode.Active;
             watcher.Received += OnBLEAdvertisement;
             DisplayTimer_Tick(sender, e);
-            
+
         }
 
         async private void OnBLEAdvertisement(BluetoothLEAdvertisementWatcher watcher, BluetoothLEAdvertisementReceivedEventArgs eventArgs)
@@ -343,7 +347,7 @@ namespace GHLtarUtility
             }
 
             // Enumerate through WinUSB devices and set those up if they are valid dongles.
-            foreach (UsbRegistry device in LibUsbDotNet.UsbDevice.AllDevices)
+            foreach (UsbRegistry device in UsbDevice.AllDevices)
             {
                 // USB\VID_12BA&PID_074B is the ID of the PS3/Wii U dongle.
                 if (device.Vid == 0x12BA && device.Pid == 0x074B)
@@ -353,6 +357,17 @@ namespace GHLtarUtility
                     if (PS3Peripherals.Count < 4 && trueDevice != null && !devices.Contains(trueDevice.DevicePath))
                     {
                         PS3Peripheral newGuitar = new PS3Guitar(trueDevice, client.CreateXbox360Controller());
+                        PS3Peripherals.Add(newGuitar);
+                    }
+                }
+                // USB\VID_12BA&PID_074B is the ID of the PS3/Wii U dongle.
+                if (device.Vid == 0x1430 && device.Pid == 0x07BB)
+                {
+                    UsbDevice trueDevice;
+                    device.Open(out trueDevice);
+                    if (PS3Peripherals.Count < 4 && trueDevice != null && !devices.Contains(trueDevice.DevicePath))
+                    {
+                        PS3Peripheral newGuitar = new PS4Guitar(trueDevice, client.CreateXbox360Controller());
                         PS3Peripherals.Add(newGuitar);
                     }
                 }

@@ -75,6 +75,7 @@
     <Compile Include="PS3Peripheral.cs" />
     <Compile Include="PS3Turntable.cs" />
     <Compile Include="PS3Guitar.cs" />
+    <Compile Include="PS4Guitar.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
