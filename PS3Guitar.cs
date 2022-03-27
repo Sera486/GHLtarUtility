@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace GHLtarUtility
 {
-    class PS3Guitar : PS3Peripheral
+    class PS3Guitar : PSPeripheral
     {
         private Timer runTimer;
         System.Threading.Thread t;
@@ -116,6 +116,11 @@ namespace GHLtarUtility
             runTimer.Dispose();
             t.Abort();
             device.Close();
+        }
+
+        public static bool isCorrectDevice(UsbRegistry device)
+        {
+            return device.Vid == 0x12BA && device.Pid == 0x074B;
         }
     }
 }

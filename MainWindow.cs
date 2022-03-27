@@ -21,7 +21,7 @@ namespace GHLtarUtility
         ViGEmClient client;
         BluetoothLEAdvertisementWatcher watcher = new BluetoothLEAdvertisementWatcher();
 
-        List<PS3Peripheral> PS3Peripherals = new List<PS3Peripheral>();
+        List<PSPeripheral> PSPeripherals = new List<PSPeripheral>();
         List<iOSGuitar> iOSGuitars = new List<iOSGuitar>();
 
         public MainWindow()
@@ -44,32 +44,17 @@ namespace GHLtarUtility
         {
             watcher.Stop();
             foreach (iOSGuitar peripheral in iOSGuitars) peripheral.destroy();
-            foreach (PS3Peripheral peripheral in PS3Peripherals) peripheral.destroy();
+            foreach (PSPeripheral peripheral in PSPeripherals) peripheral.destroy();
         }
 
         private void UpdatePS3Display()
         {
-            if (PS3Peripherals.Count >= 1)
+            if (PSPeripherals.Count >= 1)
             {
                 ps3P1Panel.BackColor = Color.LimeGreen;
                 ps3P1Label.Text = "Connected!";
 
-                // Update indicators
-                try
-                {
-                    switch (PS3Peripherals[0].controller.UserIndex)
-                    {
-                        case 0: ps3P1Indicator.Image = Properties.Resources.player1; break;
-                        case 1: ps3P1Indicator.Image = Properties.Resources.player2; break;
-                        case 2: ps3P1Indicator.Image = Properties.Resources.player3; break;
-                        case 3: ps3P1Indicator.Image = Properties.Resources.player4; break;
-                        default: ps3P1Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    ps3P1Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(ps3P1Indicator, PSPeripherals[0].controller.UserIndex);
             }
             else
             {
@@ -78,27 +63,12 @@ namespace GHLtarUtility
                 ps3P1Indicator.Image = Properties.Resources.player0;
             }
 
-            if (PS3Peripherals.Count >= 2)
+            if (PSPeripherals.Count >= 2)
             {
                 ps3P2Panel.BackColor = Color.LimeGreen;
                 ps3P2Label.Text = "Connected!";
 
-                // Update indicators
-                try
-                {
-                    switch (PS3Peripherals[1].controller.UserIndex)
-                    {
-                        case 0: ps3P2Indicator.Image = Properties.Resources.player1; break;
-                        case 1: ps3P2Indicator.Image = Properties.Resources.player2; break;
-                        case 2: ps3P2Indicator.Image = Properties.Resources.player3; break;
-                        case 3: ps3P2Indicator.Image = Properties.Resources.player4; break;
-                        default: ps3P2Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    ps3P2Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(ps3P2Indicator, PSPeripherals[1].controller.UserIndex);
             }
             else
             {
@@ -107,27 +77,12 @@ namespace GHLtarUtility
                 ps3P2Indicator.Image = Properties.Resources.player0;
             }
 
-            if (PS3Peripherals.Count >= 3)
+            if (PSPeripherals.Count >= 3)
             {
                 ps3P3Panel.BackColor = Color.LimeGreen;
                 ps3P3Label.Text = "Connected!";
 
-                // Update indicators
-                try
-                {
-                    switch (PS3Peripherals[2].controller.UserIndex)
-                    {
-                        case 0: ps3P3Indicator.Image = Properties.Resources.player1; break;
-                        case 1: ps3P3Indicator.Image = Properties.Resources.player2; break;
-                        case 2: ps3P3Indicator.Image = Properties.Resources.player3; break;
-                        case 3: ps3P3Indicator.Image = Properties.Resources.player4; break;
-                        default: ps3P3Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    ps3P3Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(ps3P3Indicator, PSPeripherals[2].controller.UserIndex);
             }
             else
             {
@@ -136,33 +91,37 @@ namespace GHLtarUtility
                 ps3P3Indicator.Image = Properties.Resources.player0;
             }
 
-            if (PS3Peripherals.Count >= 4)
+            if (PSPeripherals.Count >= 4)
             {
                 ps3P4Panel.BackColor = Color.LimeGreen;
                 ps3P4Label.Text = "Connected!";
 
-                // Update indicators
-                try
-                {
-                    switch (PS3Peripherals[3].controller.UserIndex)
-                    {
-                        case 0: ps3P4Indicator.Image = Properties.Resources.player1; break;
-                        case 1: ps3P4Indicator.Image = Properties.Resources.player2; break;
-                        case 2: ps3P4Indicator.Image = Properties.Resources.player3; break;
-                        case 3: ps3P4Indicator.Image = Properties.Resources.player4; break;
-                        default: ps3P4Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    ps3P4Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(ps3P4Indicator, PSPeripherals[3].controller.UserIndex);
             }
             else
             {
                 ps3P4Panel.BackColor = Color.LightGray;
                 ps3P4Label.Text = "Not Connected";
                 ps3P4Indicator.Image = Properties.Resources.player0;
+            }
+        }
+
+        private void UpdateIndicator(PictureBox deviceIndicator, int userIndex)
+        {
+            try
+            {
+                switch (userIndex)
+                {
+                    case 0: deviceIndicator.Image = Properties.Resources.player1; break;
+                    case 1: deviceIndicator.Image = Properties.Resources.player2; break;
+                    case 2: deviceIndicator.Image = Properties.Resources.player3; break;
+                    case 3: deviceIndicator.Image = Properties.Resources.player4; break;
+                    default: deviceIndicator.Image = Properties.Resources.player0; break;
+                }
+            }
+            catch (Exception)
+            {
+                deviceIndicator.Image = Properties.Resources.player0;
             }
         }
 
@@ -174,22 +133,7 @@ namespace GHLtarUtility
                 iOSP1Label.Text = "Connected!";
                 iOSP1Disconnect.Enabled = true;
 
-                // Update indicators
-                try
-                {
-                    switch (iOSGuitars[0].controller.UserIndex)
-                    {
-                        case 0: iOSP1Indicator.Image = Properties.Resources.player1; break;
-                        case 1: iOSP1Indicator.Image = Properties.Resources.player2; break;
-                        case 2: iOSP1Indicator.Image = Properties.Resources.player3; break;
-                        case 3: iOSP1Indicator.Image = Properties.Resources.player4; break;
-                        default: iOSP1Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    iOSP1Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(iOSP1Indicator, iOSGuitars[0].controller.UserIndex);
             }
             else
             {
@@ -205,22 +149,7 @@ namespace GHLtarUtility
                 iOSP2Label.Text = "Connected!";
                 iOSP2Disconnect.Enabled = true;
 
-                // Update indicators
-                try
-                {
-                    switch (iOSGuitars[1].controller.UserIndex)
-                    {
-                        case 0: iOSP2Indicator.Image = Properties.Resources.player1; break;
-                        case 1: iOSP2Indicator.Image = Properties.Resources.player2; break;
-                        case 2: iOSP2Indicator.Image = Properties.Resources.player3; break;
-                        case 3: iOSP2Indicator.Image = Properties.Resources.player4; break;
-                        default: iOSP2Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    iOSP2Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(iOSP2Indicator, iOSGuitars[1].controller.UserIndex);
             }
             else
             {
@@ -236,22 +165,7 @@ namespace GHLtarUtility
                 iOSP3Label.Text = "Connected!";
                 iOSP3Disconnect.Enabled = true;
 
-                // Update indicators
-                try
-                {
-                    switch (iOSGuitars[2].controller.UserIndex)
-                    {
-                        case 0: iOSP3Indicator.Image = Properties.Resources.player1; break;
-                        case 1: iOSP3Indicator.Image = Properties.Resources.player2; break;
-                        case 2: iOSP3Indicator.Image = Properties.Resources.player3; break;
-                        case 3: iOSP3Indicator.Image = Properties.Resources.player4; break;
-                        default: iOSP3Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    iOSP3Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(iOSP3Indicator, iOSGuitars[2].controller.UserIndex);
             }
             else
             {
@@ -267,22 +181,7 @@ namespace GHLtarUtility
                 iOSP4Label.Text = "Connected!";
                 iOSP4Disconnect.Enabled = true;
 
-                // Update indicators
-                try
-                {
-                    switch (iOSGuitars[3].controller.UserIndex)
-                    {
-                        case 0: iOSP4Indicator.Image = Properties.Resources.player1; break;
-                        case 1: iOSP4Indicator.Image = Properties.Resources.player2; break;
-                        case 2: iOSP4Indicator.Image = Properties.Resources.player3; break;
-                        case 3: iOSP4Indicator.Image = Properties.Resources.player4; break;
-                        default: iOSP4Indicator.Image = Properties.Resources.player0; break;
-                    }
-                }
-                catch (Exception)
-                {
-                    iOSP4Indicator.Image = Properties.Resources.player0;
-                }
+                UpdateIndicator(iOSP4Indicator, iOSGuitars[3].controller.UserIndex);
             }
             else
             {
@@ -298,7 +197,6 @@ namespace GHLtarUtility
             watcher.ScanningMode = BluetoothLEScanningMode.Active;
             watcher.Received += OnBLEAdvertisement;
             DisplayTimer_Tick(sender, e);
-
         }
 
         async private void OnBLEAdvertisement(BluetoothLEAdvertisementWatcher watcher, BluetoothLEAdvertisementReceivedEventArgs eventArgs)
@@ -327,17 +225,16 @@ namespace GHLtarUtility
                 }
             }
 
-
             // Create list of devices to prevent re-attaching existing dongles.
             List<string> devices = new List<string>();
 
-            foreach (PS3Peripheral peripheral in PS3Peripherals.ToList())
+            foreach (PSPeripheral peripheral in PSPeripherals.ToList())
             {
                 // Remove any peripherals that can't be found anymore
                 if (!peripheral.isReadable())
                 {
                     peripheral.destroy();
-                    PS3Peripherals.Remove(peripheral);
+                    PSPeripherals.Remove(peripheral);
                 }
                 else
                 {
@@ -349,38 +246,31 @@ namespace GHLtarUtility
             // Enumerate through WinUSB devices and set those up if they are valid dongles.
             foreach (UsbRegistry device in UsbDevice.AllDevices)
             {
-                // USB\VID_12BA&PID_074B is the ID of the PS3/Wii U dongle.
-                if (device.Vid == 0x12BA && device.Pid == 0x074B)
+                if (!PS3Guitar.isCorrectDevice(device) ||
+                    !PS4Guitar.isCorrectDevice(device) ||
+                    !PS3Turntable.isCorrectDevice(device) ||
+                    PSPeripherals.Count >= 4)
+                    continue;
+
+                UsbDevice trueDevice;
+                device.Open(out trueDevice);
+                if (trueDevice != null && !devices.Contains(trueDevice.DevicePath))
                 {
-                    UsbDevice trueDevice;
-                    device.Open(out trueDevice);
-                    if (PS3Peripherals.Count < 4 && trueDevice != null && !devices.Contains(trueDevice.DevicePath))
+                    PSPeripheral newPeripheral = null;
+                    if (PS3Guitar.isCorrectDevice(device))
                     {
-                        PS3Peripheral newGuitar = new PS3Guitar(trueDevice, client.CreateXbox360Controller());
-                        PS3Peripherals.Add(newGuitar);
+                        newPeripheral = new PS3Guitar(trueDevice, client.CreateXbox360Controller());
                     }
-                }
-                // USB\VID_12BA&PID_074B is the ID of the PS3/Wii U dongle.
-                if (device.Vid == 0x1430 && device.Pid == 0x07BB)
-                {
-                    UsbDevice trueDevice;
-                    device.Open(out trueDevice);
-                    if (PS3Peripherals.Count < 4 && trueDevice != null && !devices.Contains(trueDevice.DevicePath))
+                    if (PS3Turntable.isCorrectDevice(device))
                     {
-                        PS3Peripheral newGuitar = new PS4Guitar(trueDevice, client.CreateXbox360Controller());
-                        PS3Peripherals.Add(newGuitar);
+                        newPeripheral = new PS3Turntable(trueDevice, client.CreateXbox360Controller());
                     }
-                }
-                // USB\VID_12BA&PID_074B is the ID of the PS3 Turntable
-                else if (device.Vid == 0x12BA && device.Pid == 0x0140)
-                {
-                    UsbDevice trueDevice;
-                    device.Open(out trueDevice);
-                    if (PS3Peripherals.Count < 4 && trueDevice != null && !devices.Contains(trueDevice.DevicePath))
+                    if (PS4Guitar.isCorrectDevice(device))
                     {
-                        PS3Peripheral newTurntable = new PS3Turntable(trueDevice, client.CreateXbox360Controller());
-                        PS3Peripherals.Add(newTurntable);
+                        newPeripheral = new PS4Guitar(trueDevice, client.CreateXbox360Controller());
                     }
+
+                    PSPeripherals.Add(newPeripheral);
                 }
             }
 

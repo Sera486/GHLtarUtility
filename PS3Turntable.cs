@@ -6,7 +6,7 @@ using System;
 
 namespace GHLtarUtility
 {
-    class PS3Turntable : PS3Peripheral
+    class PS3Turntable : PSPeripheral
     {
         System.Threading.Thread t;
         private bool shouldStop;
@@ -89,6 +89,12 @@ namespace GHLtarUtility
             try { controller.Disconnect(); } catch (Exception) { }
             t.Abort();
             device.Close();
+        }
+
+        public static bool isCorrectDevice(UsbRegistry device)
+        {
+            // USB\VID_12BA&PID_074B is the ID of the PS3 Turntable
+            return device.Vid == 0x12BA && device.Pid == 0x0140;
         }
     }
 }
