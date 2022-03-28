@@ -246,9 +246,9 @@ namespace GHLtarUtility
             // Enumerate through WinUSB devices and set those up if they are valid dongles.
             foreach (UsbRegistry device in UsbDevice.AllDevices)
             {
-                if (!PS3Guitar.isCorrectDevice(device) ||
-                    !PS4Guitar.isCorrectDevice(device) ||
-                    !PS3Turntable.isCorrectDevice(device) ||
+                if ((!PS3Guitar.isCorrectDevice(device) &&
+                    !PS4Guitar.isCorrectDevice(device) &&
+                    !PS3Turntable.isCorrectDevice(device)) ||
                     PSPeripherals.Count >= 4)
                     continue;
 
